@@ -1,17 +1,23 @@
 'use client'
 
-import { addProducts } from "@/app/admin/_actions/product"
+import { addProducts, updateProducts } from "@/app/admin/_actions/product"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { formatCurrency } from "@/lib/formatter"
+import { Product } from "@prisma/client"
+import Image from "next/image"
 import { useState } from "react"
 import { useFormState, useFormStatus } from "react-dom"
 
-const ProductForm = () => {
-  const [error, action] = useFormState(addProducts, {})
-  const [priceInCents, setPriceInCents] = useState<number>()
+type ProductProps = {
+  product?: Product | null
+}
+
+const ProductForm = ({product}: ProductProps) => {
+  const [error, action] = useFormState(product == null ? addProducts : updateProducts.bind(null, product.id), {})
+  const [priceInCents, setPriceInCents] = useState<number | undefined>(product?.priceInCents)
   return (
     <form className="space-y-8" action={action}>
       <div className="space-y-2">
@@ -25,6 +31,7 @@ const ProductForm = () => {
           placeholder="Enter product name"
           autoComplete="off"
           className="text-secondary-foreground"
+          defaultValue={product?.name || ""}
         />
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
@@ -36,7 +43,6 @@ const ProductForm = () => {
           inputMode="numeric"
           id="priceInCents"
           name="priceInCents"
-      
           placeholder="Enter price (in cents)"
           autoComplete="off"
           className="text-secondary-foreground"
@@ -57,10 +63,10 @@ const ProductForm = () => {
         <Textarea
           id="description"
           name="description"
-       
           placeholder="Enter product description"
           autoComplete="off"
           className="text-secondary-foreground"
+          defaultValue={product?.description || ""}
         />
         {error.description && (
           <div className="text-destructive">{error.description}</div>
@@ -74,11 +80,12 @@ const ProductForm = () => {
           type="file"
           id="file"
           name="file"
-     
-          placeholder="Enter product name"
-          autoComplete="off"
           className="text-secondary-foreground file:bg-secondary file:text-secondary-foreground file:mr-4 file:cursor-pointer"
+          required={product == null}
         />
+        {product != null && (
+          <div className="text-muted-foreground">{product.filePath}</div>
+        )}
         {error.file && <div className="text-destructive">{error.file}</div>}
       </div>
       <div className="space-y-2">
@@ -89,11 +96,17 @@ const ProductForm = () => {
           type="file"
           id="image"
           name="image"
-     
-          placeholder="Enter product name"
-          autoComplete="off"
           className="text-secondary-foreground file:bg-secondary file:text-secondary-foreground file:mr-4 file:cursor-pointer"
+          required={product == null}
         />
+        {product != null && (
+          <Image
+            src={`/${product.imagePath}`}
+            width={400}
+            height={400}
+            alt={product.name}
+          />
+        )}
         {error.image && <div className="text-destructive">{error.image}</div>}
       </div>
       <SubmitButton />
