@@ -1,9 +1,10 @@
 'use client'
 
 import { cn } from "@/lib/utils"
-import Link from "next/link"
+// import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ComponentProps, ReactNode } from "react"
+import { Link } from "next-view-transitions"
 
 type NavbarProps = {
   children: ReactNode
@@ -23,7 +24,7 @@ export const NavLinks = (props: Omit<ComponentProps<typeof Link>, "className">) 
     <Link
       {...props}
       className={cn(
-        "p-4 hover:bg-secondary hover:text-secondary-foreground focus-visible:bg-secondary focus-visible:text-secondary-foreground hover:rounded-3xl",
+        "p-4 hover:bg-secondary hover:text-secondary-foreground focus-visible:bg-secondary focus-visible:text-secondary-foreground hover:rounded-3xl select-none",
         pathname === props.href && "bg-accent text-primary rounded-3xl"
       )}
     />

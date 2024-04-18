@@ -70,7 +70,7 @@ const AdminDashboard = async () => {
         body={formatNumber(userData.userCount)}
       />
       <DashboardCards
-        title="Active Products"
+        title="Products"
         description={`${formatNumber(
           productData.inactiveProductCount
         )} inactive products`}
