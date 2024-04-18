@@ -11,7 +11,7 @@ type NavbarProps = {
 
 export const Navbar = ({children}: NavbarProps) => {
   return (
-    <nav className="max-w-6xl mx-auto dark px-4 py-2 text-accent-foreground flex justify-center items-center gap-6 mb-2">
+    <nav className="max-w-6xl mx-auto dark px-4 py-2 text-accent-foreground flex justify-center items-center gap-6 mb-6">
       {children}
     </nav>
   )

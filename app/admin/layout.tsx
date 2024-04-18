@@ -1,5 +1,6 @@
 import { NavLinks, Navbar } from "@/components/Navbar";
 
+export const dynamic = "force-dynamic"; //stop caching for admin page
 
 export default function AdminLayout({
   children,
